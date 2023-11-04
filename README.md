@@ -1,125 +1,113 @@
-# Skola24 API Client
+# Skola24 Timetable Retrieval Module
 
-This code provides a Python API client for accessing timetable data from the Skola24 platform.
+This Python module allows for the retrieval of timetables from the Skola24 system by interacting with their API. The module offers a simple interface to access different endpoints to obtain information such as the timetable for a specific school unit, week, and year.
+
+## Disclaimer
+
+This software is an independent wrapper for the Skola24 API and is not affiliated with, authorized, maintained, sponsored, or endorsed by Skola24 or any of its affiliates or subsidiaries. This is an unofficial wrapper and is designed for educational purposes only.
+
+The Author of this software does not claim ownership of any data retrieved from the Skola24 API and makes no guarantees about the quality, accuracy, or completeness of any information or data provided by this software. Users of this wrapper are responsible for complying with all terms and conditions of the Skola24 API.
+
+By using this software, you acknowledge that you have read and agree to comply with the terms and conditions of the Skola24 API and understand that the Author is not responsible for any violations of those terms.
+
+---
+
+All other rights reserved by skola24.
 
 
-## Setup
+## Installation
 
-To use this API client, you will need to retrieve your X-Scope, which you will find as a header in every request to skola 24. Use your browsers inbuilt inspection tool (`Ctrl+Shift+I` on chrome and firefox). You find requests under the `Network` tab.
+The module does not need installation via package managers like pip. Instead, you can directly import it into your Python project as shown below:
 
-Once retrieved, set it using `set_auth_token(<YOUR_X-SCOPE>)`
+```python
+import skola24
+```
 
+## Configuration
+
+Before you start retrieving timetables, you must set the `x_scope` attribute of the `API` class to your specific 'x_scope_value'.
+
+```python
+skola24.api.x_scope = "your_xscope_value"
+```
 
 ## Usage
 
-The main method for retrieving timetable data is `get_timetable()`
+To get a timetable, you can use the `get_timetable` function with the required parameters:
 
+```python
+timetable = skola24.get_timetable(host_name, unit_name, schema_id, week, year)
+```
 
+---
+Please replace `your_xscope_value`, `host_name`, `unit_name`, `schema_id`, `week`, and `year` with actual values before running the code.
 
-### `get_timetable()`:
+## API Reference
 
+Below are the core functionalities provided by the module.
 
-#### Parameters:
+### `API` Class
 
-- `host_name`: The name of the school's host in the Skola24 system.
-- `unit_id`: The ID of the unit for which you want to retrieve the timetable.
-- `schema_id`: The ID of the schema for which you want to retrieve the timetable.
-- `year`: The year for which you want to retrieve the timetable.
-- `week`: The week for which you want to retrieve the timetable.
-- `raw` (optional): If set to `True`, returns the raw HTTP response instead of the parsed timetable data.
+This class encapsulates the methods to interact with the Skola24 API endpoints. It handles sessions, headers, and the generation of necessary keys and signatures.
 
+#### Methods
 
-#### Return:
-A list of dictionaries, each representing a lesson in the timetable. The dictionaries contain the following keys:
+- `get_signature`: Returns an encrypted signature for the provided string.
+- `get_key`: Retrieves the key necessary to render the timetable.
+- `get_active_school_years`: Returns information about the active school years for a given host.
+- `get_units`: Retrieves a list of school units associated with a host name.
+- `get_timetable`: Fetches the timetable for a specific school unit, week, and year.
 
-- `title`: The title of the lesson.
-- `teacher`: The name of the teacher teaching the lesson.
-- `location`: The location of the lesson.
-- `time_start`: The start time of the lesson, in ISO format.
-- `time_end`: The end time of the lesson, in ISO format.
-- `date`: The date of the lesson, in ISO format.
+### `get_timetable` Function
 
-If there are no lessons, the function will return `"no_activities"`.
-
-
-
-
+This standalone function provides a high-level interface to retrieve a list of lessons for a given unit and schema ID within a specific week and year.
 
 ### Example
+
+Here is an example showing how to retrieve a timetable for a specified week and year:
+
 ```python
-import skola_24_api
-skola_24_api.set_auth_token("abcd1234")
+import skola24
 
-timetable = skola_24_api.get_timetable("host", "unit", "schema", 2022, 1)
+host_name = 'lerum.skola24.se'
+unit_name = 'Lerums gymnasium'
+schema_id = 'te2b'
+week = 45
+year = 2023
+skola24.API.x_scope = 'your_xscope_value'
+
+schema = skola24.get_timetable(host_name, unit_name, schema_id, week, year)
+print(schema)
 ```
 
-This returns a list of lessons, each containing title, teacher, location, start/end times, and date.
+## Contributions
 
-```json
-[
-{
-    "title": "Math", 
-    "teacher": "Mrs. Johnson",
-    "location": "Room 201",
-    "time_start": "08:00",
-    "time_end": "09:00", 
-    "date": "2022-01-03"
-},
-...
-]
-```
+Contributions to this module are welcome. Please ensure that you provide adequate documentation for your code and that it adheres to the project's code style.
 
+## License
 
-## Helper Methods
+### Grant of License
 
-There are additional helper methods for retrieving unit info, render keys, and schema signatures needed for the `get_timetable()` call:
+The Author grants users of this software a non-exclusive, revocable license to use, modify, and maintain the software solely for personal and educational purposes, and to contribute to its repository on GitHub or similar platforms designated by the Author, subject to the following restrictions:
 
-- `get_unit_guid()`
-- `get_render_key()`
-- `get_schema_signature()`
+1. **Non-Commercial Use**: Users are not permitted to use this software for commercial purposes.
 
-### `get_render_key(host_name, unit_id)`
+2. **No Redistribution**: Users are not allowed to redistribute the software or any derivative works.
 
-Retrieves the key needed to retrieve a timetable for a specific school and unit.
+3. **Contribution**: Contributions to the software by submitting patches, improvements, or modifications are allowed, but they become the property of the software's repository and its owner(s). Contributions must also adhere to the same restrictions as stated in this license.
 
+4. **Attribution**: Users must give appropriate credit to the original Author, provide a link to the source of the software, and indicate if changes were made when contributing or sharing the software in a non-commercial setting.
 
-- `host_name`: The name of the school's host in the Skola24 system.
-- `unit_id`: The ID of the unit for which you want to retrieve the timetable.
+### Termination
 
-Returns the key needed to retrieve a timetable for the specified school and unit.
+This license is effective until terminated. The license will terminate automatically without notice from The Author if the user fails to comply with any provision contained herein. Upon termination, the user must destroy all copies of the software.
 
-### `get_unit_guid(host_name, unit_id)`
+The Author reserves the right to terminate the license at any time and for any reason, at The Author's sole discretion. Upon termination, the user agrees to cease all use and destroy all copies of the software immediately. Any such termination may be effected without prior notice to the user. Continued use of the software following notice of termination constitutes an infringement of copyright, and legal action may be taken to enforce this termination.
 
-Retrieves the unit GUID needed to retrieve a timetable for a specific school and unit.
+### Disclaimer of Warranty
 
-- `host_name`: The name of the school's host in the Skola24 system.
-- `unit_id`: The ID of the unit for which you want to retrieve the timetable.
+The software is provided "as is," without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement.
 
-Returns the unit GUID needed to retrieve a timetable for the specified school and unit.
+### Limitation of Liability
 
-### `get_schema_signature(host_name, unit_id, schema_id)`
-
-Retrieves the signature needed to retrieve a timetable for a specific school, unit, and schema.
-
-- `host_name`: The name of the school's host in the Skola24 system
-- `unit_id`: The ID of the unit for which you want to retrieve the timetable.
-- `schema_id`: The ID of the schema for which you want to retrieve the timetable.
-
-
-## Error Handling
-
-The `get_timetable()` method will raise a `ValidationError` if the API returns an error. The exception contains the error code and message from Skola24.
-
-Here is an additional notes/acknowledgements section added to the end:
-
-## Acknowledgements
-
-- This API client is unofficial and not endorsed by Skola24
-
-- The developer assumes no responsibillity for how the code is being used.
-
-- The developer accepst no liability directly or indiriectly arising from use.
-
-- Usage of Skola24's API should only be used in accordance with their terms of service
-
-- Information retrieved from the API should only be used in accordance with Skola24's terms of service
+In no event shall The Author be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
