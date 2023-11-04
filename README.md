@@ -10,10 +10,6 @@ The Author of this software does not claim ownership of any data retrieved from 
 
 By using this software, you acknowledge that you have read and agree to comply with the terms and conditions of the Skola24 API and understand that the Author is not responsible for any violations of those terms.
 
----
-
-All other rights reserved by skola24.
-
 
 ## Installation
 
@@ -111,3 +107,7 @@ The software is provided "as is," without warranty of any kind, express or impli
 ### Limitation of Liability
 
 In no event shall The Author be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
+
+---
+
+All other rights reserved by skola24.
