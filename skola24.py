@@ -213,18 +213,3 @@ def get_timetable(host_name:str, unit_name, schema_id:str, week:int, year:int):
     raise ValueError(f'Schema ID not found in {host_name}/{unit_name}')
   else:
     raise f"Error: {timetable_data['validation']}"
-  
-  
-  
-
-# Example usage
-
-host_name = 'lerum.skola24.se'
-unit_name = 'Lerums gymnasium'
-schema_id = 'te2b'
-week = 45
-year = 2023
-API.x_scope = '8a22163c-8662-4535-9050-bc5e1923df48'
-
-schema = get_timetable(host_name, unit_name, schema_id, week, year)
-print(schema)
