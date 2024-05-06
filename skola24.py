@@ -2,8 +2,8 @@ import requests
 import json
 
 class API:
-  def __init__(self, x_scope):
-    self.x_scope = x_scope 
+  x_scope=""
+  def __init__(self):
     self.session = requests.Session()
     self.base_url = "https://web.skola24.se"
     self.headers = {
